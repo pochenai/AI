@@ -53,6 +53,15 @@ header .note {
   margin-right: 6px;
 }
 
+.legend .arrow-mark {
+  display: inline-block;
+  width: 14px;
+  text-align: center;
+  margin-right: 6px;
+  font-weight: 700;
+  color: #000;
+}
+
 .layout {
   display: flex;
   gap: 24px;

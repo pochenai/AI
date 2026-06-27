@@ -63,10 +63,15 @@ export default function App() {
         <h1>Value Iteration Visualization</h1>
         <p>
           A 10×10 grid-world MDP. Cell color: green = positive value, red = negative;
-          thin black arrows show the current optimal action. Click <strong>Step</strong>
+          thin black arrows show the current optimal action. Click <strong>Step </strong>
           repeatedly to watch the value function converge and the optimal policy emerge.
         </p>
         <ul className="legend">
+          <li>
+            <span className="arrow-mark">→</span>
+            <strong>Arrows = policy</strong>: the optimal move direction(s) for each cell
+            (argmax over actions). Multiple arrows mean tied-optimal directions.
+          </li>
           <li>
             <span className="swatch" style={{ borderColor: "#f4b400" }} />
             <strong>Reward cells (gold border)</strong>: (7,2)=+3, (8,7)=+10. Reward granted on arrival.
