@@ -19,7 +19,7 @@ export default function App() {
   const [initialValue, setInitialValue] = useState("0.0");
   const [absorbing, setAbsorbingState] = useState(true);
   const [brightness, setBrightness] = useState(1.0);
-  const [fontSize, setFontSize] = useState(14);
+  const [fontSize, setFontSize] = useState(11);
   const [sqsize, setSqsize] = useState(50);
   // true when the greedy policy is identical before and after the last step
   // (note: the value function may still be changing, so this is not a proof of optimality)
