@@ -1,6 +1,8 @@
 interface Props {
   discount: string;
   setDiscount: (v: string) => void;
+  transitionProb: string;
+  setTransitionProb: (v: string) => void;
   initialValue: string;
   setInitialValue: (v: string) => void;
   absorbing: boolean;
@@ -15,6 +17,7 @@ interface Props {
 }
 
 const round1 = (n: number) => Math.round(n * 10) / 10;
+const clamp01 = (n: number) => Math.min(Math.max(n, 0), 1);
 
 export function Controls(p: Props) {
   return (
@@ -34,6 +37,29 @@ export function Controls(p: Props) {
           onChange={(e) => p.setDiscount(e.target.value)}
         />
         <button onClick={() => p.setDiscount(String(round1(parseFloat(p.discount) + 0.1)))}>
+          +
+        </button>
+      </div>
+
+      <div className="row">
+        <label>Transition P</label>
+        <button
+          onClick={() =>
+            p.setTransitionProb(String(clamp01(round1(parseFloat(p.transitionProb) - 0.1))))
+          }
+        >
+          −
+        </button>
+        <input
+          value={p.transitionProb}
+          size={3}
+          onChange={(e) => p.setTransitionProb(e.target.value)}
+        />
+        <button
+          onClick={() =>
+            p.setTransitionProb(String(clamp01(round1(parseFloat(p.transitionProb) + 0.1))))
+          }
+        >
           +
         </button>
       </div>

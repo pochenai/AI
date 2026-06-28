@@ -1,17 +1,23 @@
 import { useRef, useState } from "react";
 import { Controls } from "./Controls";
 import { GridCanvas } from "./GridCanvas";
-import { VICore } from "./vicore";
+import { QValueVICore } from "./vicore";
 
 export default function App() {
-  // core is a mutable object kept as the same instance across renders
-  const coreRef = useRef(new VICore());
+  // core is a mutable object kept as the same instance across renders.
+  // Lazily created once so we can set initial model options (e.g. absorbing).
+  const coreRef = useRef<QValueVICore | null>(null);
+  if (coreRef.current === null) {
+    coreRef.current = new QValueVICore();
+    coreRef.current.absorbing = true; // default: Absorbing States on
+  }
   const core = coreRef.current;
 
   const [version, setVersion] = useState(0); // bump to trigger canvas redraw
   const [discount, setDiscount] = useState("0.9");
+  const [transitionProb, setTransitionProb] = useState("0.7");
   const [initialValue, setInitialValue] = useState("0.0");
-  const [absorbing, setAbsorbingState] = useState(false);
+  const [absorbing, setAbsorbingState] = useState(true);
   const [brightness, setBrightness] = useState(1.0);
   const [fontSize, setFontSize] = useState(14);
   const [sqsize, setSqsize] = useState(50);
@@ -26,6 +32,8 @@ export default function App() {
   const onStep = () => {
     const d = parseFloat(discount);
     if (!Number.isNaN(d)) {
+      const p = parseFloat(transitionProb);
+      if (!Number.isNaN(p)) core.transitionProb = Math.min(Math.max(p, 0), 1);
       const before = core.policyKey();
       core.dostep(d);
       // The policy (arrow pattern) is identical before and after this step.
@@ -82,6 +90,11 @@ export default function App() {
             reward; movement is unaffected and they never terminate.
           </li>
           <li>
+            <strong>Transition P</strong>: probability the agent moves in its intended
+            direction (default 0.7); the remaining 1−P is split evenly among the other
+            three directions. Set it to 1.0 for a deterministic world.
+          </li>
+          <li>
             <strong>Absorbing States</strong>: when checked, the two reward cells become{" "}
             <strong>terminal / absorbing</strong> — the agent stops on arrival (value fixed at
             +10 / +3). When unchecked (default), the agent collects the reward and is then
@@ -111,6 +124,8 @@ export default function App() {
         <Controls
           discount={discount}
           setDiscount={setDiscount}
+          transitionProb={transitionProb}
+          setTransitionProb={setTransitionProb}
           initialValue={initialValue}
           setInitialValue={setInitialValue}
           absorbing={absorbing}

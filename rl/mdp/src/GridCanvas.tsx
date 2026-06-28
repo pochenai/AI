@@ -114,9 +114,9 @@ export function GridCanvas({ core, version, sqsize, brightness, fontSize }: Prop
         // 3) Thin black arrows for the optimal action(s), drawn on top of the
         //    value so they aren't hidden. If all four actions tie (e.g. the
         //    all-zero initial state) there is no clear policy, so skip them.
-        const q = core.qvalues[x][y];
+        const opt = core.optimalActions(x, y);
         const optimal: number[] = [];
-        for (let a = 0; a < 4; a++) if (v === q[a]) optimal.push(a);
+        for (let a = 0; a < 4; a++) if (opt[a]) optimal.push(a);
         if (optimal.length < 4) {
           ctx.strokeStyle = "rgba(0,0,0,0.85)";
           ctx.lineWidth = Math.max(1, sqsize / 40);
